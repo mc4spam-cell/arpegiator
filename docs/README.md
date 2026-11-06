@@ -1,6 +1,6 @@
 # Arpegiator
 
-Arpégiateur à pas inspiré de Stepic, dans l'esprit visuel de Harmonie. Application web locale, sans dépendance et sans étape de compilation.
+Arpégiateur à pas, dans l'esprit visuel de Harmonie. Application web locale, sans dépendance et sans étape de compilation.
 
 ## Utilisation
 
