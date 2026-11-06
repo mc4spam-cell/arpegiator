@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hauptbildschirm — Arpegiator — Dokumentation</title>
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; font: 15px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; color: #22242a; background: #f5f3ee; }
+  main { max-width: 860px; margin: 0 auto; padding: 32px 20px 64px; }
+  header a.back { font-size: 13px; color: #6b7079; text-decoration: none; }
+  header a.back:hover { color: #b77d12; }
+  h1 { font-size: 28px; margin: 12px 0 4px; letter-spacing: -.01em; }
+  h2 { font-size: 18px; margin: 28px 0 10px; }
+  .lead { color: #6b7079; margin: 0 0 24px; font-size: 15px; }
+  .shot { width: 100%; border: 1px solid #dcd8ce; border-radius: 10px; margin: 16px 0 24px; display: block; }
+  table.ui { width: 100%; border-collapse: collapse; margin: 8px 0 24px; }
+  table.ui th, table.ui td { text-align: left; padding: 10px 12px; vertical-align: top; border-bottom: 1px solid #dcd8ce; font-size: 14px; }
+  table.ui th { width: 30%; color: #22242a; font-weight: 600; background: #ffffff; }
+  table.ui td { color: #44464d; }
+  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; margin: 16px 0 32px; }
+  .card { display: block; background: #ffffff; border: 1px solid #dcd8ce; border-radius: 10px; padding: 16px; text-decoration: none; color: inherit; }
+  .card:hover { border-color: #b77d12; }
+  .card h3 { margin: 0 0 6px; font-size: 16px; }
+  .card p { margin: 0; color: #6b7079; font-size: 13px; }
+  .lang-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin: 24px 0; }
+  .lang-card { display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 24px 16px; background: #ffffff; border: 1px solid #dcd8ce; border-radius: 12px; text-decoration: none; color: inherit; font-size: 15px; }
+  .lang-card:hover { border-color: #b77d12; }
+  .lang-card .flag { font-size: 36px; }
+  footer { margin-top: 48px; color: #9399a3; font-size: 12px; text-align: center; }
+  a { color: #b77d12; }
+</style>
+</head>
+<body>
+<main>
+  <header><a class="back" href="de_index.html">← Zurück zum Index</a></header>
+  <h1>Hauptbildschirm</h1>
+  <p class="lead">Arpegiator ist ein Schritt-Arpeggiator auf einer einzigen Seite: Sie definieren ein Akkord-Raster, konfigurieren die Schrittspuren (Tonhöhe, Oktave, Dauer, T/R/G-Flags) und drücken Abspielen. Der aktuelle Akkord wird in der gewählten Reihenfolge arpeggiert (aufwärts, abwärts, zufällig, …); das Raster wird über einen Taktzyklus wiederholt, ein Akkord pro Takt.</p>
+  <img class="shot" src="screenshots/arpegiator.jpg" alt="Hauptbildschirm">
+  <h2>Oberflächenübersicht</h2>
+  <table class="ui">
+    <tbody>
+      <tr><th>Kopfzeile</th><td>Titel, Untertitel, Hilfe-Schaltfläche (i) und Sprachauswahl (Flagge).</td></tr>
+      <tr><th>Bereich Transport</th><td>Panel mit allen Wiedergabe-Einstellungen: BPM, Takt (3/4, 4/4, 5/8, 7/8), Schritte pro Takt (1 bis 48), Unterteilung (1/4 bis 1/32, inkl. Triolen), Arpeggio-Reihenfolge, Oktaven und Swing.</td></tr>
+      <tr><th>Akkord-Raster</th><td>Jede Zeile definiert einen Akkord durch Grundton, Qualität (maj, min, maj7, …) und Oktave. ✕ entfernt den Akkord, « + Akkord hinzufügen » erweitert das Raster. Der aktuell gespielte Akkord ist in Akzentfarbe umrandet.</td></tr>
+      <tr><th>Schritt-Raster</th><td>Eine Spur pro Parameter: an/aus-Leiste, Tonhöhe, Oktave, Dauer, Flags T (Bindung), R (Zufall aus dem Akkord), G (Glide). Jede Spalte ist ein Schritt. Vertikal am Schieberegler ziehen stellt den Wert ein; Doppelklick setzt zurück. Der Würfel « Zufall » würfelt die ganze Zeile. Die Pfeile ‹ › erscheinen, wenn das Raster überläuft.</td></tr>
+      <tr><th>Feste Aktionsleiste unten</th><td>Abspielen/Stopp-Schaltfläche (Beschriftung folgt dem Zustand) und MIDI-Exportieren-Schaltfläche. Immer sichtbar, in jeder Bildschirmgröße.</td></tr>
+    </tbody>
+  </table>
+  <footer>Erstellt am 2026-11-06 — MC4Spam</footer>
+</main>
+</body>
+</html>

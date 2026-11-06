@@ -499,42 +499,6 @@
     update();
   }
 
-  // Construit la grille des drapeaux et marque la langue active.
-  function buildLangGrid() {
-    const grid = document.getElementById("lang-grid");
-    if (!grid || !window.i18n) return;
-    const render = () => {
-      grid.innerHTML = "";
-      for (const l of window.i18n.LANGS) {
-        const b = document.createElement("button");
-        b.type = "button";
-        b.textContent = l.flag;
-        b.title = l.name;
-        b.setAttribute("aria-label", l.name);
-        if (l.code === window.i18n.lang) b.classList.add("active");
-        b.addEventListener("click", () => window.i18n.setLang(l.code));
-        grid.appendChild(b);
-      }
-    };
-    render();
-    window.addEventListener("langchange", render);
-  }
-
-  // Ouverture/fermeture de la popover d'aide.
-  function bindHelp() {
-    const btn = document.getElementById("help-btn");
-    const pop = document.getElementById("help-pop");
-    if (!btn || !pop) return;
-    const close = pop.querySelector(".close");
-    const toggle = (show) => { pop.hidden = show === undefined ? !pop.hidden : !show; };
-    btn.addEventListener("click", (e) => { e.stopPropagation(); toggle(); });
-    close?.addEventListener("click", () => toggle(false));
-    document.addEventListener("click", (e) => {
-      if (!pop.hidden && !pop.contains(e.target) && e.target !== btn) toggle(false);
-    });
-    document.addEventListener("keydown", (e) => { if (e.key === "Escape") toggle(false); });
-  }
-
   // Au changement de langue : reconstruire tout le dynamique.
   function bindLangChange() {
     window.addEventListener("langchange", () => {
@@ -551,8 +515,6 @@
   buildGrid();
   bindControls();
   bindScrollArrows();
-  buildLangGrid();
-  bindHelp();
   bindLangChange();
   renderChordList();
   renderChordNotes();

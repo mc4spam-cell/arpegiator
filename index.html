@@ -125,55 +125,93 @@
 
   /* Notes de l'accord courant. */
   .chord-notes { display: flex; flex-wrap: wrap; gap: 6px; }
+  .chord-notes[hidden] { display: none; }
   .chord-notes .n {
     background: var(--panel2); border: 1px solid var(--line); border-radius: 6px;
     padding: 3px 8px; font-size: 12px; color: var(--text); font-variant-numeric: tabular-nums;
   }
   .chord-notes .n.root { background: var(--accent); color: var(--accent-ink); border-color: transparent; }
-  /* Liste d'accords. */
-  .chord-list { display: flex; flex-direction: column; gap: 6px; }
+  /* Liste d'accords : compacte, une ligne mince par accord. */
+  .chord-panel { padding: 10px; }
+  .chord-list { display: flex; flex-direction: column; gap: 4px; }
   .chord-row {
-    display: grid; grid-template-columns: 30px auto 1fr auto auto 30px; gap: 8px; align-items: center;
-    background: var(--panel2); border: 1px solid var(--line); border-radius: 8px; padding: 6px 10px;
+    display: grid; grid-template-columns: 22px auto auto auto 1fr 24px; gap: 6px; align-items: center;
+    background: var(--panel2); border: 1px solid var(--line); border-radius: 6px; padding: 3px 8px;
   }
   .chord-row.current { border-color: var(--accent); }
   .chord-row .idx { color: var(--muted); font-size: 11px; font-variant-numeric: tabular-nums; text-align: center; }
   .chord-row select, .chord-row input { background: var(--panel); color: var(--text);
-    border: 1px solid var(--line); border-radius: 6px; padding: 4px 6px; font: inherit; font-size: 13px; }
+    border: 1px solid var(--line); border-radius: 4px; padding: 2px 5px; font: inherit; font-size: 12px; }
+  .chord-row label.hint { font-size: 11px; }
   .chord-row .del {
-    background: transparent; border: 1px solid var(--line); border-radius: 6px;
-    color: var(--muted); padding: 4px 8px; cursor: pointer;
+    background: transparent; border: 1px solid var(--line); border-radius: 4px;
+    color: var(--muted); padding: 2px 6px; cursor: pointer; font-size: 12px; line-height: 1;
   }
   .chord-row .del:hover { color: var(--tie); border-color: var(--tie); }
 
   .hint { color: var(--muted); font-size: 12px; margin-top: 6px; }
 
-  /* Barre d'outils en tête (Aide + sélecteur de langue). */
-  .header-actions { position: relative; margin-left: auto; display: flex; align-items: center; gap: 10px; }
-  .lang-grid {
-    display: grid; grid-template-columns: repeat(5, 1fr); gap: 3px;
-    padding: 4px; background: var(--panel); border: 1px solid var(--line);
-    border-radius: 8px;
+  /* Aide + sélecteur de langue : look & feel identique à Harmonie. */
+  #help {
+    align-self: center; flex: none; width: 26px; height: 26px; padding: 0;
+    border-radius: 50%; line-height: 1; font-size: 14px; font-style: italic; font-weight: 600;
+    display: inline-flex; align-items: center; justify-content: center;
+    margin-left: auto;
   }
-  .lang-grid button {
-    width: 28px; height: 24px; padding: 0; font-size: 16px; line-height: 1;
-    background: transparent; border: 1px solid transparent; border-radius: 4px;
-    cursor: pointer; display: flex; align-items: center; justify-content: center;
+  #lang {
+    align-self: center; flex: none; width: 30px; height: 30px; padding: 0;
+    border-radius: 50%; font-size: 16px; line-height: 1;
+    display: inline-flex; align-items: center; justify-content: center;
+    background: var(--panel2); border: 1px solid var(--line); cursor: pointer;
   }
-  .lang-grid button.active { border-color: var(--accent); background: var(--panel2); }
-  .lang-grid button:hover { background: var(--panel2); }
-  .help-pop {
-    position: absolute; top: calc(100% + 8px); right: 0; z-index: 50;
-    width: 320px; max-width: calc(100vw - 32px);
-    background: var(--panel); border: 1px solid var(--line); border-radius: 10px;
-    padding: 14px; box-shadow: 0 10px 30px rgba(0,0,0,.4);
-    font-size: 13px; color: var(--text);
+  #lang:hover { border-color: var(--muted); }
+  dialog.sheet {
+    width: min(420px, calc(100vw - 32px)); padding: 0; color: var(--text);
+    background: var(--bg); border: 1px solid var(--line); border-radius: 12px;
   }
-  .help-pop[hidden] { display: none; }
-  .help-pop .close { position: absolute; top: 6px; right: 8px; background: transparent; border: 0; color: var(--muted); font-size: 18px; cursor: pointer; }
-  [dir="rtl"] .help-pop { left: 0; right: auto; }
-  [dir="rtl"] .help-pop .close { left: 8px; right: auto; }
-  [dir="rtl"] .header-actions { margin-left: 0; margin-right: auto; }
+  dialog.sheet::backdrop { background: rgba(0, 0, 0, .5); }
+  .sheet-head { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin: 0; padding: 14px 18px; border-bottom: 1px solid var(--line); }
+  .sheet-head h2 { margin: 0; font-size: 15px; letter-spacing: 0; text-transform: none; color: var(--text); }
+  .sheet .x { background: none; border: 0; padding: 4px; font-size: 15px; color: var(--muted); cursor: pointer; }
+  .sheet .x:hover { color: var(--text); }
+  .sheet .body { margin: 0; padding: 16px 18px 18px; font-size: 13px; color: var(--text); }
+  .sheet .body p { margin: 0 0 10px; }
+  .sheet .body p:last-child { margin-bottom: 0; }
+  .sc-credits { margin: 0; padding: 12px 18px 16px; border-top: 1px solid var(--line); font-size: 12px; color: var(--muted); line-height: 1.6; }
+  dialog#langSheet { padding: 0; color: var(--text); background: var(--bg); border: 1px solid var(--line); border-radius: 12px; width: min(518px, calc(100vw - 32px)); }
+  dialog#langSheet::backdrop { background: rgba(0, 0, 0, .5); }
+  #langSheet .lang-grid { display: grid; grid-template-columns: repeat(auto-fit, 86px); gap: 8px; padding: 14px; justify-content: center; }
+  #langSheet button {
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px;
+    width: 86px; height: 76px; padding: 10px 4px; font-size: 11px; line-height: 1.2;
+    color: var(--muted); background: var(--panel2); border: 1px solid var(--line); border-radius: 8px; cursor: pointer;
+    text-align: center;
+  }
+  #langSheet button .flag { font-size: 24px; line-height: 1; }
+  #langSheet button:hover { border-color: var(--muted); color: var(--text); }
+  #langSheet button.on { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); font-weight: 600; }
+  html[dir="rtl"] #help { margin-left: 0; margin-right: auto; }
+
+  /* Barre d'actions fixe en bas de page : miroir des boutons Lecture / Export MIDI. */
+  .miniplay {
+    display: flex; position: fixed; left: 0; right: 0; bottom: 0; z-index: 20;
+    padding: 10px 14px calc(10px + env(safe-area-inset-bottom)); gap: 8px;
+    background: color-mix(in srgb, var(--bg) 92%, transparent);
+    backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+    border-top: 1px solid var(--line);
+  }
+  .miniplay button { flex: 1; padding: 12px 14px; font-size: 14px; font-weight: 600; }
+  .miniplay #miniExportBtn { background: var(--panel2); }
+  /* Doublons dans la barre Transport : on garde les éléments pour l'état, invisibles. */
+  #playToggle, #exportMidi { display: none; }
+  main { padding-bottom: 96px; }
+
+  @media (max-width: 760px) {
+    #lang { width: 26px; height: 26px; font-size: 13px; }
+    #langSheet .lang-grid { grid-template-columns: repeat(auto-fit, 72px); gap: 6px; padding: 10px; }
+    #langSheet button { width: 72px; height: 66px; padding: 8px 4px; font-size: 10px; }
+    #langSheet button .flag { font-size: 20px; }
+  }
 
   /* --- Mobile -------------------------------------------------------------- */
   @media (max-width: 760px) {
@@ -216,16 +254,8 @@
   <header>
     <h1 data-i18n="app.title">Arpegiator</h1>
     <p data-i18n="app.subtitle">Arpégiateur à pas — tenez des notes au clavier, lancez.</p>
-    <div class="header-actions">
-      <button id="help-btn" data-i18n="help" data-i18n-attr="aria-label:help">Aide</button>
-      <div id="lang-grid" class="lang-grid" role="group" data-i18n-attr="aria-label:lang"></div>
-      <div id="help-pop" class="help-pop" hidden>
-        <button class="close" data-i18n-attr="aria-label:help_close">×</button>
-        <p data-i18n="grid_hint">Glisser verticalement dans un slider : régler la valeur. Double-clic : remettre à zéro. T = tenue, R = note aléatoire dans l'accord, G = glide depuis la note précédente.</p>
-        <p data-i18n="loop_hint">En lecture, chaque accord dure une mesure et la grille boucle.</p>
-        <p class="hint" style="margin:10px 0 0; border-top: 1px solid var(--line); padding-top: 8px">MC4Spam — 2026-11-06</p>
-      </div>
-    </div>
+    <button id="help" data-i18n-attr="aria-label:help,title:help" aria-haspopup="dialog" aria-expanded="false">i</button>
+    <button id="lang" data-i18n-attr="aria-label:lang,title:lang" aria-haspopup="dialog" aria-expanded="false">🇫🇷</button>
   </header>
 
   <section class="zone">
@@ -266,6 +296,18 @@
   </section>
 
   <section class="zone">
+    <h2 data-i18n="chord_grid">Grille d'accords</h2>
+    <div class="panel chord-panel">
+      <div id="chord-list" class="chord-list"></div>
+      <div class="row" style="margin-top:8px">
+        <button id="chord-add" data-i18n="add_chord">+ Ajouter un accord</button>
+        <span class="hint" style="margin:0" data-i18n="loop_hint">En lecture, chaque accord dure une mesure et la grille boucle.</span>
+      </div>
+      <div id="chord-notes" class="chord-notes" hidden></div>
+    </div>
+  </section>
+
+  <section class="zone">
     <h2 data-i18n="pas">Pas</h2>
     <div class="panel">
       <div class="lanes-wrap">
@@ -279,26 +321,95 @@
       </div>
     </div>
   </section>
-
-  <section class="zone">
-    <h2 data-i18n="chord_grid">Grille d'accords</h2>
-    <div class="panel">
-      <div id="chord-list" class="chord-list"></div>
-      <div class="row" style="margin-top:10px">
-        <button id="chord-add" data-i18n="add_chord">+ Ajouter un accord</button>
-        <span class="hint" style="margin:0" data-i18n="loop_hint">En lecture, chaque accord dure une mesure et la grille boucle.</span>
-      </div>
-      <div style="margin-top:12px">
-        <div class="hint" style="margin-bottom:4px" data-i18n="current_chord">Accord en cours :</div>
-        <div id="chord-notes" class="chord-notes"></div>
-      </div>
-    </div>
-  </section>
 </main>
 
-<script src="i18n.js?v=1"></script>
-<script src="i18n-dict.js?v=1"></script>
+<div id="miniplay" class="miniplay" data-i18n-attr="aria-label:mini_aria">
+  <button id="miniPlayBtn" class="primary" data-i18n-attr="aria-label:play,title:play">Lecture</button>
+  <button id="miniExportBtn" data-i18n-attr="aria-label:export_midi,title:export_midi" data-i18n="export_midi">Exporter MIDI</button>
+</div>
+
+<dialog id="shortcuts" class="sheet" aria-labelledby="scTitle">
+  <form method="dialog" class="sheet-head">
+    <h2 id="scTitle" data-i18n="help">Aide</h2>
+    <button class="x" value="close" data-i18n-attr="aria-label:help_close">✕</button>
+  </form>
+  <div class="body">
+    <p data-i18n="grid_hint">Glisser verticalement dans un slider : régler la valeur. Double-clic : remettre à zéro. T = tenue, R = note aléatoire dans l'accord, G = glide depuis la note précédente.</p>
+    <p data-i18n="loop_hint">En lecture, chaque accord dure une mesure et la grille boucle.</p>
+  </div>
+  <p class="sc-credits">
+    <span data-i18n="help_author">Auteur</span> : MC4Spam<br>
+    <span data-i18n="help_updated">Dernière mise à jour</span> : <span id="aboutDate"></span>
+  </p>
+</dialog>
+<dialog id="langSheet" aria-labelledby="langTitle">
+  <div class="lang-grid" id="langGrid"></div>
+</dialog>
+
+<script src="i18n.js?v=2"></script>
+<script src="i18n-dict.js?v=3"></script>
 <script src="engine.js?v=4"></script>
-<script src="app.js?v=4"></script>
+<script src="app.js?v=5"></script>
+<script>
+  // Fenêtre d'aide, ouverte depuis le bouton « i ». Date : document.lastModified localisée.
+  (function () {
+    const dlg = document.getElementById('shortcuts'), btn = document.getElementById('help');
+    if (!dlg || !btn) return;
+    const dateEl = document.getElementById('aboutDate');
+    const fmtDate = () => {
+      if (!dateEl) return;
+      const d = new Date(document.lastModified);
+      if (isNaN(d)) { dateEl.textContent = document.lastModified; return; }
+      const lang = (window.i18n && window.i18n.lang) || 'en';
+      dateEl.textContent = d.toLocaleDateString(lang, { year: 'numeric', month: 'long', day: 'numeric' });
+    };
+    fmtDate();
+    window.addEventListener('langchange', fmtDate);
+    btn.addEventListener('click', () => { btn.setAttribute('aria-expanded', 'true'); dlg.showModal(); });
+    dlg.addEventListener('close', () => btn.setAttribute('aria-expanded', 'false'));
+    dlg.addEventListener('click', e => { if (e.target === dlg) dlg.close(); });
+  })();
+</script>
+<script>
+  // Barre d'actions fixe : les mini boutons recopient #playToggle (texte + clic) et #exportMidi (clic).
+  (function () {
+    const play = document.getElementById('playToggle'), exp = document.getElementById('exportMidi');
+    const bPlay = document.getElementById('miniPlayBtn'), bExp = document.getElementById('miniExportBtn');
+    if (bPlay && play) {
+      const sync = () => { bPlay.textContent = play.textContent; };
+      bPlay.addEventListener('click', () => play.click());
+      new MutationObserver(sync).observe(play, { childList: true, characterData: true, subtree: true });
+      sync();
+    }
+    if (bExp && exp) bExp.addEventListener('click', () => exp.click());
+  })();
+</script>
+<script>
+  // Sélecteur de langue : bouton rond avec drapeau courant, popover avec les 10 drapeaux.
+  (function () {
+    const btn = document.getElementById('lang'), dlg = document.getElementById('langSheet'), grid = document.getElementById('langGrid');
+    if (!btn || !dlg || !grid || !window.i18n) return;
+    const render = () => {
+      const cur = window.i18n.lang;
+      grid.innerHTML = window.i18n.LANGS.map(l =>
+        `<button data-code="${l.code}" class="${l.code === cur ? 'on' : ''}" aria-label="${l.name}" title="${l.name}">
+          <span class="flag">${l.flag}</span><span>${l.name}</span>
+        </button>`).join('');
+      const now = window.i18n.LANGS.find(l => l.code === cur);
+      if (now) btn.textContent = now.flag;
+    };
+    btn.addEventListener('click', () => { render(); btn.setAttribute('aria-expanded', 'true'); dlg.showModal(); });
+    dlg.addEventListener('close', () => btn.setAttribute('aria-expanded', 'false'));
+    dlg.addEventListener('click', e => {
+      if (e.target === dlg) return dlg.close();
+      const b = e.target.closest('button[data-code]');
+      if (!b) return;
+      window.i18n.setLang(b.dataset.code);
+      dlg.close();
+    });
+    window.addEventListener('langchange', render);
+    render();
+  })();
+</script>
 </body>
 </html>

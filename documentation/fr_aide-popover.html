@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fenêtre d'aide — Arpegiator — Documentation</title>
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; font: 15px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; color: #22242a; background: #f5f3ee; }
+  main { max-width: 860px; margin: 0 auto; padding: 32px 20px 64px; }
+  header a.back { font-size: 13px; color: #6b7079; text-decoration: none; }
+  header a.back:hover { color: #b77d12; }
+  h1 { font-size: 28px; margin: 12px 0 4px; letter-spacing: -.01em; }
+  h2 { font-size: 18px; margin: 28px 0 10px; }
+  .lead { color: #6b7079; margin: 0 0 24px; font-size: 15px; }
+  .shot { width: 100%; border: 1px solid #dcd8ce; border-radius: 10px; margin: 16px 0 24px; display: block; }
+  table.ui { width: 100%; border-collapse: collapse; margin: 8px 0 24px; }
+  table.ui th, table.ui td { text-align: left; padding: 10px 12px; vertical-align: top; border-bottom: 1px solid #dcd8ce; font-size: 14px; }
+  table.ui th { width: 30%; color: #22242a; font-weight: 600; background: #ffffff; }
+  table.ui td { color: #44464d; }
+  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; margin: 16px 0 32px; }
+  .card { display: block; background: #ffffff; border: 1px solid #dcd8ce; border-radius: 10px; padding: 16px; text-decoration: none; color: inherit; }
+  .card:hover { border-color: #b77d12; }
+  .card h3 { margin: 0 0 6px; font-size: 16px; }
+  .card p { margin: 0; color: #6b7079; font-size: 13px; }
+  .lang-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin: 24px 0; }
+  .lang-card { display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 24px 16px; background: #ffffff; border: 1px solid #dcd8ce; border-radius: 12px; text-decoration: none; color: inherit; font-size: 15px; }
+  .lang-card:hover { border-color: #b77d12; }
+  .lang-card .flag { font-size: 36px; }
+  footer { margin-top: 48px; color: #9399a3; font-size: 12px; text-align: center; }
+  a { color: #b77d12; }
+</style>
+</head>
+<body>
+<main>
+  <header><a class="back" href="fr_index.html">← Retour à l'index</a></header>
+  <h1>Fenêtre d'aide</h1>
+  <p class="lead">Fenêtre modale ouverte depuis le bouton « i » de l'en-tête. Elle rappelle brièvement comment manipuler la grille de pas, puis affiche l'auteur et la date de dernière publication.</p>
+  <img class="shot" src="screenshots/aide-popover.jpg" alt="Fenêtre d'aide">
+  <h2>Contenu</h2>
+  <table class="ui">
+    <tbody>
+      <tr><th>Titre « Aide » + bouton ✕</th><td>Barre d'en-tête de la fenêtre modale ; ✕ ferme la fenêtre (Échap ou clic sur le fond également).</td></tr>
+      <tr><th>Mode d'emploi de la grille</th><td>Glisser verticalement dans un slider règle la valeur. Double-clic remet à zéro. T = tenue, R = note aléatoire dans l'accord, G = glide depuis la note précédente.</td></tr>
+      <tr><th>Mode d'emploi de la lecture</th><td>En lecture, chaque accord dure une mesure et la grille boucle.</td></tr>
+      <tr><th>Pied de page</th><td>Auteur : MC4Spam. Dernière mise à jour : date de la dernière publication, localisée dans la langue courante.</td></tr>
+    </tbody>
+  </table>
+  <footer>Généré le 2026-11-06 — MC4Spam</footer>
+</main>
+</body>
+</html>

@@ -7,18 +7,14 @@
   'use strict';
 
   const LANGS = [
-    { code: 'en', flag: '🇬🇧', name: 'English' },
-    { code: 'zh', flag: '🇨🇳', name: '中文' },
-    { code: 'hi', flag: '🇮🇳', name: 'हिन्दी' },
-    { code: 'es', flag: '🇪🇸', name: 'Español' },
     { code: 'fr', flag: '🇫🇷', name: 'Français' },
-    { code: 'ar', flag: '🇸🇦', name: 'العربية' },
-    { code: 'bn', flag: '🇧🇩', name: 'বাংলা' },
-    { code: 'pt', flag: '🇧🇷', name: 'Português' },
+    { code: 'en', flag: '🇬🇧', name: 'English' },
+    { code: 'es', flag: '🇪🇸', name: 'Español' },
+    { code: 'de', flag: '🇩🇪', name: 'Deutsch' },
+    { code: 'zh', flag: '🇨🇳', name: '中文' },
     { code: 'ru', flag: '🇷🇺', name: 'Русский' },
-    { code: 'ur', flag: '🇵🇰', name: 'اردو' },
   ];
-  const RTL = new Set(['ar', 'ur']);
+  const RTL = new Set();
   const STORE = 'arpegiator.lang';
   const FALLBACK = 'en';
   const DEFAULT = 'fr';
