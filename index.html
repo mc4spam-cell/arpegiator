@@ -1,0 +1,265 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Arpegiator</title>
+<style>
+  :root {
+    --bg: #14161a; --panel: #1c1f25; --panel2: #242830; --line: #313640;
+    --text: #ebe8e2; --muted: #9399a3; --accent: #e3b04b; --accent-ink: #1b1608;
+    --step: #2a2d33; --step-on: #e3b04b; --slide: #5fb8ac; --tie: #e57c63;
+    --key-w: #e9e6df; --key-b: #2a2d33; --key-held: #e3b04b;
+  }
+  @media (prefers-color-scheme: light) {
+    :root {
+      --bg: #f5f3ee; --panel: #ffffff; --panel2: #f0ede6; --line: #dcd8ce;
+      --text: #22242a; --muted: #6b7079; --accent: #b77d12; --accent-ink: #ffffff;
+      --step: #e4dfd2; --step-on: #b77d12; --slide: #2f8f83; --tie: #c9553b;
+      --key-w: #ffffff; --key-b: #33363d; --key-held: #b77d12;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--text);
+    font: 15px/1.45 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  }
+  main { max-width: min(1400px, calc(100vw - 32px)); margin: 0 auto; padding: 24px 16px 64px; }
+  header { display: flex; align-items: baseline; gap: 14px; margin-bottom: 20px; flex-wrap: wrap; }
+  h1 { font-size: 24px; margin: 0; letter-spacing: -.01em; }
+  header p { margin: 0; color: var(--muted); }
+  h2 { margin: 0 0 8px; font-size: 12px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+
+  .zone { margin-bottom: 22px; }
+  .panel { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 14px; }
+  .row { display: flex; flex-wrap: wrap; gap: 14px 22px; align-items: center; }
+  .row > label { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; color: var(--muted); }
+  .row select, .row input[type=number] {
+    background: var(--panel2); color: var(--text); border: 1px solid var(--line);
+    border-radius: 6px; padding: 5px 8px; font: inherit; font-size: 13px;
+  }
+  button {
+    background: var(--panel2); color: var(--text); border: 1px solid var(--line);
+    border-radius: 8px; padding: 6px 12px; font: inherit; font-size: 13px; cursor: pointer;
+  }
+  button.primary { background: var(--accent); color: var(--accent-ink); border-color: transparent; font-weight: 600; }
+  button:hover { border-color: var(--accent); }
+
+  /* Grille à la Stepic : une ligne par paramètre, une colonne par pas. */
+  .lanes-wrap { position: relative; }
+  .lanes {
+    display: grid; gap: 8px;
+    overflow-x: auto; scroll-behavior: smooth;
+  }
+  .lane {
+    display: grid; grid-template-columns: 64px max-content; align-items: stretch;
+    gap: 10px; background: var(--panel2); border: 1px solid var(--line); border-radius: 8px; padding: 8px;
+    width: max-content; min-width: 100%;
+  }
+  .lane > .lbl {
+    position: sticky; left: 0; z-index: 1; background: var(--panel2);
+  }
+  .scroll-arrow {
+    position: absolute; top: 0; bottom: 0; width: 32px;
+    display: none; align-items: center; justify-content: center;
+    border: 0; padding: 0; cursor: pointer; color: var(--text);
+    font-size: 22px; line-height: 1; font-weight: 700;
+    z-index: 3; pointer-events: auto;
+  }
+  .scroll-arrow.left  { left: 0;  background: linear-gradient(to right, var(--panel) 40%, transparent); }
+  .scroll-arrow.right { right: 0; background: linear-gradient(to left,  var(--panel) 40%, transparent); }
+  .lanes-wrap.has-left  .scroll-arrow.left  { display: flex; }
+  .lanes-wrap.has-right .scroll-arrow.right { display: flex; }
+  .lane > .lbl {
+    font-size: 11px; text-transform: uppercase; letter-spacing: .08em; color: var(--muted);
+    display: flex; flex-direction: column; align-items: flex-start; justify-content: center; gap: 6px;
+  }
+  .lane > .lbl .dice {
+    font-size: 11px; padding: 3px 8px; border-radius: 6px; cursor: pointer;
+    background: var(--panel); border: 1px solid var(--line); color: var(--text);
+    text-transform: none; letter-spacing: 0;
+  }
+  .lane > .lbl .dice:hover { border-color: var(--accent); color: var(--accent); }
+  .lane > .cells {
+    display: grid; grid-auto-flow: column; grid-auto-columns: 32px; gap: 3px;
+  }
+  .cell { position: relative; min-width: 0; user-select: none; }
+  .cell .num {
+    font-size: 10px; color: var(--muted); text-align: center;
+    font-variant-numeric: tabular-nums; padding: 2px 0;
+  }
+  .cell .val {
+    font-size: 10px; color: var(--muted); text-align: center;
+    font-variant-numeric: tabular-nums; padding: 2px 0;
+  }
+  /* Slider vertical "fait maison" : barre de fond + remplissage centré sur le zéro. */
+  .vs {
+    position: relative; height: 90px; background: var(--step); border-radius: 4px;
+    cursor: ns-resize; overflow: hidden;
+  }
+  .vs .fill {
+    position: absolute; left: 0; right: 0; background: var(--step-on);
+  }
+  .vs.center .fill { background: var(--slide); }
+  .vs.playing { outline: 2px solid var(--accent); outline-offset: -1px; }
+  .vs.off { opacity: .35; }
+  .lane.pitch .vs    { height: 120px; }
+  .lane.octave .vs   { height: 56px; }
+  .lane.duration .vs { height: 80px; }
+  /* Ligne d'en-tête : numéro + bouton ON. */
+  .head .cell { display: flex; flex-direction: column; align-items: stretch; gap: 3px; }
+  .head .on {
+    background: var(--step); border: 1px solid var(--line); color: var(--muted);
+    border-radius: 4px; padding: 4px 0; font-size: 11px; cursor: pointer; text-align: center;
+  }
+  .head .on.active { background: var(--step-on); color: var(--accent-ink); border-color: transparent; }
+  /* Ligne de mini-toggles R/G/T. */
+  .toggles .cell { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 2px; }
+  .toggles button {
+    padding: 2px 0; font-size: 10px; border-radius: 4px; background: transparent;
+    border: 1px solid var(--line); color: var(--muted); cursor: pointer;
+  }
+  .toggles button.active.tie { background: var(--tie); border-color: var(--tie); color: var(--accent-ink); }
+  .toggles button.active.rnd { background: var(--slide); border-color: var(--slide); color: var(--accent-ink); }
+  .toggles button.active.gld { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+
+  /* Notes de l'accord courant. */
+  .chord-notes { display: flex; flex-wrap: wrap; gap: 6px; }
+  .chord-notes .n {
+    background: var(--panel2); border: 1px solid var(--line); border-radius: 6px;
+    padding: 3px 8px; font-size: 12px; color: var(--text); font-variant-numeric: tabular-nums;
+  }
+  .chord-notes .n.root { background: var(--accent); color: var(--accent-ink); border-color: transparent; }
+  /* Liste d'accords. */
+  .chord-list { display: flex; flex-direction: column; gap: 6px; }
+  .chord-row {
+    display: grid; grid-template-columns: 30px auto 1fr auto auto 30px; gap: 8px; align-items: center;
+    background: var(--panel2); border: 1px solid var(--line); border-radius: 8px; padding: 6px 10px;
+  }
+  .chord-row.current { border-color: var(--accent); }
+  .chord-row .idx { color: var(--muted); font-size: 11px; font-variant-numeric: tabular-nums; text-align: center; }
+  .chord-row select, .chord-row input { background: var(--panel); color: var(--text);
+    border: 1px solid var(--line); border-radius: 6px; padding: 4px 6px; font: inherit; font-size: 13px; }
+  .chord-row .del {
+    background: transparent; border: 1px solid var(--line); border-radius: 6px;
+    color: var(--muted); padding: 4px 8px; cursor: pointer;
+  }
+  .chord-row .del:hover { color: var(--tie); border-color: var(--tie); }
+
+  .hint { color: var(--muted); font-size: 12px; margin-top: 6px; }
+
+  /* --- Mobile -------------------------------------------------------------- */
+  @media (max-width: 760px) {
+    main { padding: 14px 10px 96px; }
+    h1 { font-size: 20px; }
+    header { margin-bottom: 12px; gap: 10px; }
+    header p { font-size: 13px; }
+    h2 { margin-bottom: 6px; }
+    .zone { margin-bottom: 14px; }
+    .panel { padding: 10px; }
+    .row { gap: 10px 14px; }
+    .row > label { font-size: 12px; gap: 6px; }
+
+    /* Sliders plus courts, cellules un peu plus larges au doigt. */
+    .lane { grid-template-columns: 52px max-content; padding: 6px; gap: 8px; }
+    .lane > .lbl { font-size: 10px; letter-spacing: .05em; gap: 4px; }
+    .lane > .lbl .dice { padding: 2px 6px; font-size: 10px; }
+    .lane > .cells { grid-auto-columns: 36px; }
+    .lane.pitch .vs    { height: 70px; }
+    .lane.octave .vs   { height: 40px; }
+    .lane.duration .vs { height: 50px; }
+
+    /* Accord : on retire l'aperçu de notes pour tenir sur une ligne. */
+    .chord-row { grid-template-columns: 22px auto auto auto 24px; gap: 6px; padding: 5px 8px; }
+    .chord-row > span.hint { display: none; }
+    .chord-row select, .chord-row input { padding: 3px 5px; font-size: 12px; }
+    .chord-row .oct { width: 42px !important; }
+
+    /* Bouton Lecture flottant en bas pour rester à portée du pouce. */
+    #playToggle {
+      position: fixed; right: 14px; bottom: 14px; z-index: 20;
+      padding: 12px 20px; border-radius: 999px; font-size: 15px;
+      box-shadow: 0 6px 20px rgba(0,0,0,.35);
+    }
+  }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <h1>Arpegiator</h1>
+    <p>Arpégiateur à pas — tenez des notes au clavier, lancez.</p>
+  </header>
+
+  <section class="zone">
+    <h2>Transport</h2>
+    <div class="panel row">
+      <button id="playToggle" class="primary">Lecture</button>
+      <label>BPM <input type="number" id="bpm" value="110" min="40" max="240" step="1" style="width:70px"></label>
+      <label>Mesure
+        <select id="meter">
+          <option value="3/4">3/4</option>
+          <option value="4/4" selected>4/4</option>
+          <option value="5/8">5/8</option>
+          <option value="7/8">7/8</option>
+        </select>
+      </label>
+      <label>Pas par mesure <input type="number" id="steps" value="16" min="1" max="48" step="1" style="width:70px"></label>
+      <label>Débit
+        <select id="rate">
+          <option>1/4</option><option>1/8</option><option>1/8T</option>
+          <option selected>1/16</option><option>1/16T</option><option>1/32</option>
+        </select>
+      </label>
+      <label>Ordre
+        <select id="order">
+          <option value="up">Montant</option>
+          <option value="down">Descendant</option>
+          <option value="updown">Montant-descendant</option>
+          <option value="downup">Descendant-montant</option>
+          <option value="as-played">Ordre de frappe</option>
+          <option value="random">Aléatoire</option>
+          <option value="chord">Accord</option>
+        </select>
+      </label>
+      <label>Octaves <input type="number" id="octaves" value="1" min="1" max="4" step="1" style="width:60px"></label>
+      <label>Swing <input type="number" id="swing" value="0" min="0" max="0.6" step="0.05" style="width:70px"></label>
+      <button id="exportMidi">Exporter MIDI</button>
+    </div>
+  </section>
+
+  <section class="zone">
+    <h2>Pas</h2>
+    <div class="panel">
+      <div class="lanes-wrap">
+        <button type="button" class="scroll-arrow left"  aria-label="Défiler à gauche">‹</button>
+        <div id="steps-grid" class="lanes"></div>
+        <button type="button" class="scroll-arrow right" aria-label="Défiler à droite">›</button>
+      </div>
+      <div class="hint">
+        Glisser verticalement dans un slider : régler la valeur. Double-clic : remettre à zéro.
+        T = tenue, R = note aléatoire dans l'accord, G = glide depuis la note précédente.
+      </div>
+    </div>
+  </section>
+
+  <section class="zone">
+    <h2>Grille d'accords</h2>
+    <div class="panel">
+      <div id="chord-list" class="chord-list"></div>
+      <div class="row" style="margin-top:10px">
+        <button id="chord-add">+ Ajouter un accord</button>
+        <span class="hint" style="margin:0">En lecture, chaque accord dure une mesure et la grille boucle.</span>
+      </div>
+      <div style="margin-top:12px">
+        <div class="hint" style="margin-bottom:4px">Accord en cours :</div>
+        <div id="chord-notes" class="chord-notes"></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script src="engine.js?v=3"></script>
+<script src="app.js?v=3"></script>
+</body>
+</html>
