@@ -3,6 +3,7 @@
 
 (function () {
   const E = window.Engine;
+  const T = (k, ...args) => (window.i18n ? window.i18n.t(k, ...args) : k);
 
   // État global.
   const state = {
@@ -134,7 +135,7 @@
 
   function exportMidi() {
     const notes = currentChord();
-    if (!notes.length) { alert("Tenez au moins une note (ou choisissez la source Harmonie)."); return; }
+    if (!notes.length) { alert(T("alert_no_notes")); return; }
     const events = E.renderPattern(notes, state.pattern, {
       rate: state.rate, order: state.order, steps: state.steps,
       octaves: state.octaves, seed: 1, swing: state.swing,
@@ -218,7 +219,7 @@
     // Ligne d'en-tête : num + ON par pas.
     const head = document.createElement("div");
     head.className = "lane head";
-    head.innerHTML = `<div class="lbl">pas</div><div class="cells"></div>`;
+    head.innerHTML = `<div class="lbl">${T("lane_steps")}</div><div class="cells"></div>`;
     const headCells = head.querySelector(".cells");
 
     // Lignes de paramètres.
@@ -228,7 +229,7 @@
     for (const name of ["pitch", "octave", "duration"]) {
       const lane = document.createElement("div");
       lane.className = "lane " + name;
-      lane.innerHTML = `<div class="lbl">${name}<button class="dice" title="Tirer au hasard toute la ligne">⚄ random</button></div><div class="cells"></div>`;
+      lane.innerHTML = `<div class="lbl">${T("lane_" + name)}<button class="dice" title="${T("dice_title")}">⚄ ${T("dice")}</button></div><div class="cells"></div>`;
       lanes[name] = lane.querySelector(".cells");
       laneEls[name] = lane;
       lane.querySelector(".dice").addEventListener("click", () => {
@@ -246,7 +247,7 @@
     // Ligne de toggles R/G/T.
     const tog = document.createElement("div");
     tog.className = "lane toggles";
-    tog.innerHTML = `<div class="lbl">flags</div><div class="cells"></div>`;
+    tog.innerHTML = `<div class="lbl">${T("lane_flags")}</div><div class="cells"></div>`;
     const togCells = tog.querySelector(".cells");
 
     // Montage dans l'ordre final.
@@ -270,7 +271,7 @@
       h.innerHTML = `<div class="num">${i + 1}</div>`;
       const onBtn = document.createElement("button");
       onBtn.className = "on" + (st.on ? " active" : "");
-      onBtn.textContent = "on";
+      onBtn.textContent = T("step_on");
       onBtn.addEventListener("click", () => {
         st.on = !st.on;
         onBtn.classList.toggle("active", st.on);
@@ -322,9 +323,9 @@
         b.addEventListener("click", () => { st[key] = !st[key]; b.classList.toggle("active", st[key]); });
         return b;
       };
-      tCell.appendChild(mkTog("tie", "tie", "Tenue"));
-      tCell.appendChild(mkTog("rnd", "rand", "Note aléatoire"));
-      tCell.appendChild(mkTog("gld", "glide", "Glide"));
+      tCell.appendChild(mkTog("tie", "tie", T("tie_title")));
+      tCell.appendChild(mkTog("rnd", "rand", T("rand_title")));
+      tCell.appendChild(mkTog("gld", "glide", T("glide_title")));
       togCells.appendChild(tCell);
 
       // Lien entre ON et apparence grisée des sliders.
@@ -410,11 +411,11 @@
         <select class="quality">
           ${Object.keys(CHORD_QUALITIES).map(q => `<option value="${q}" ${q === c.quality ? "selected" : ""}>${q}</option>`).join("")}
         </select>
-        <label class="hint" style="margin:0">Oct
+        <label class="hint" style="margin:0">${T("oct_label")}
           <input type="number" class="oct" min="1" max="6" step="1" value="${c.octave}" style="width:50px">
         </label>
         <span class="hint" style="margin:0; font-variant-numeric: tabular-nums">${buildChord(c.root, c.quality, c.octave).map(m => NOTE_NAMES[m % 12]).join(" ")}</span>
-        <button class="del" title="Supprimer">✕</button>
+        <button class="del" title="${T("delete_title")}">✕</button>
       `;
       row.querySelector(".root").addEventListener("change", (e) => {
         c.root = +e.target.value; renderChordList(); renderChordNotes();
@@ -455,8 +456,8 @@
   function bindControls() {
     const playBtn = document.getElementById("playToggle");
     playBtn.addEventListener("click", () => {
-      if (state.playing) { stop(); playBtn.textContent = "Lecture"; }
-      else { audio(); start(); playBtn.textContent = "Stop"; }
+      if (state.playing) { stop(); playBtn.textContent = T("play"); }
+      else { audio(); start(); playBtn.textContent = T("stop"); }
     });
     document.getElementById("bpm").addEventListener("input", (e) => { state.bpm = +e.target.value || 110; });
     document.getElementById("rate").addEventListener("change", (e) => { state.rate = e.target.value; });
@@ -498,11 +499,61 @@
     update();
   }
 
+  // Construit la grille des drapeaux et marque la langue active.
+  function buildLangGrid() {
+    const grid = document.getElementById("lang-grid");
+    if (!grid || !window.i18n) return;
+    const render = () => {
+      grid.innerHTML = "";
+      for (const l of window.i18n.LANGS) {
+        const b = document.createElement("button");
+        b.type = "button";
+        b.textContent = l.flag;
+        b.title = l.name;
+        b.setAttribute("aria-label", l.name);
+        if (l.code === window.i18n.lang) b.classList.add("active");
+        b.addEventListener("click", () => window.i18n.setLang(l.code));
+        grid.appendChild(b);
+      }
+    };
+    render();
+    window.addEventListener("langchange", render);
+  }
+
+  // Ouverture/fermeture de la popover d'aide.
+  function bindHelp() {
+    const btn = document.getElementById("help-btn");
+    const pop = document.getElementById("help-pop");
+    if (!btn || !pop) return;
+    const close = pop.querySelector(".close");
+    const toggle = (show) => { pop.hidden = show === undefined ? !pop.hidden : !show; };
+    btn.addEventListener("click", (e) => { e.stopPropagation(); toggle(); });
+    close?.addEventListener("click", () => toggle(false));
+    document.addEventListener("click", (e) => {
+      if (!pop.hidden && !pop.contains(e.target) && e.target !== btn) toggle(false);
+    });
+    document.addEventListener("keydown", (e) => { if (e.key === "Escape") toggle(false); });
+  }
+
+  // Au changement de langue : reconstruire tout le dynamique.
+  function bindLangChange() {
+    window.addEventListener("langchange", () => {
+      buildGrid();
+      renderChordList();
+      renderChordNotes();
+      const playBtn = document.getElementById("playToggle");
+      if (playBtn) playBtn.textContent = T(state.playing ? "stop" : "play");
+    });
+  }
+
   // --- Démarrage --------------------------------------------------------------
 
   buildGrid();
   bindControls();
   bindScrollArrows();
+  buildLangGrid();
+  bindHelp();
+  bindLangChange();
   renderChordList();
   renderChordNotes();
 })();

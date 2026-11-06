@@ -148,6 +148,33 @@
 
   .hint { color: var(--muted); font-size: 12px; margin-top: 6px; }
 
+  /* Barre d'outils en tête (Aide + sélecteur de langue). */
+  .header-actions { position: relative; margin-left: auto; display: flex; align-items: center; gap: 10px; }
+  .lang-grid {
+    display: grid; grid-template-columns: repeat(5, 1fr); gap: 3px;
+    padding: 4px; background: var(--panel); border: 1px solid var(--line);
+    border-radius: 8px;
+  }
+  .lang-grid button {
+    width: 28px; height: 24px; padding: 0; font-size: 16px; line-height: 1;
+    background: transparent; border: 1px solid transparent; border-radius: 4px;
+    cursor: pointer; display: flex; align-items: center; justify-content: center;
+  }
+  .lang-grid button.active { border-color: var(--accent); background: var(--panel2); }
+  .lang-grid button:hover { background: var(--panel2); }
+  .help-pop {
+    position: absolute; top: calc(100% + 8px); right: 0; z-index: 50;
+    width: 320px; max-width: calc(100vw - 32px);
+    background: var(--panel); border: 1px solid var(--line); border-radius: 10px;
+    padding: 14px; box-shadow: 0 10px 30px rgba(0,0,0,.4);
+    font-size: 13px; color: var(--text);
+  }
+  .help-pop[hidden] { display: none; }
+  .help-pop .close { position: absolute; top: 6px; right: 8px; background: transparent; border: 0; color: var(--muted); font-size: 18px; cursor: pointer; }
+  [dir="rtl"] .help-pop { left: 0; right: auto; }
+  [dir="rtl"] .help-pop .close { left: 8px; right: auto; }
+  [dir="rtl"] .header-actions { margin-left: 0; margin-right: auto; }
+
   /* --- Mobile -------------------------------------------------------------- */
   @media (max-width: 760px) {
     main { padding: 14px 10px 96px; }
@@ -187,16 +214,26 @@
 <body>
 <main>
   <header>
-    <h1>Arpegiator</h1>
-    <p>Arpégiateur à pas — tenez des notes au clavier, lancez.</p>
+    <h1 data-i18n="app.title">Arpegiator</h1>
+    <p data-i18n="app.subtitle">Arpégiateur à pas — tenez des notes au clavier, lancez.</p>
+    <div class="header-actions">
+      <button id="help-btn" data-i18n="help" data-i18n-attr="aria-label:help">Aide</button>
+      <div id="lang-grid" class="lang-grid" role="group" data-i18n-attr="aria-label:lang"></div>
+      <div id="help-pop" class="help-pop" hidden>
+        <button class="close" data-i18n-attr="aria-label:help_close">×</button>
+        <p data-i18n="grid_hint">Glisser verticalement dans un slider : régler la valeur. Double-clic : remettre à zéro. T = tenue, R = note aléatoire dans l'accord, G = glide depuis la note précédente.</p>
+        <p data-i18n="loop_hint">En lecture, chaque accord dure une mesure et la grille boucle.</p>
+        <p class="hint" style="margin:10px 0 0; border-top: 1px solid var(--line); padding-top: 8px">MC4Spam — 2026-11-06</p>
+      </div>
+    </div>
   </header>
 
   <section class="zone">
-    <h2>Transport</h2>
+    <h2 data-i18n="transport">Transport</h2>
     <div class="panel row">
-      <button id="playToggle" class="primary">Lecture</button>
-      <label>BPM <input type="number" id="bpm" value="110" min="40" max="240" step="1" style="width:70px"></label>
-      <label>Mesure
+      <button id="playToggle" class="primary" data-i18n="play">Lecture</button>
+      <label><span data-i18n="bpm">BPM</span> <input type="number" id="bpm" value="110" min="40" max="240" step="1" style="width:70px"></label>
+      <label><span data-i18n="meter">Mesure</span>
         <select id="meter">
           <option value="3/4">3/4</option>
           <option value="4/4" selected>4/4</option>
@@ -204,39 +241,39 @@
           <option value="7/8">7/8</option>
         </select>
       </label>
-      <label>Pas par mesure <input type="number" id="steps" value="16" min="1" max="48" step="1" style="width:70px"></label>
-      <label>Débit
+      <label><span data-i18n="steps_per_bar">Pas par mesure</span> <input type="number" id="steps" value="16" min="1" max="48" step="1" style="width:70px"></label>
+      <label><span data-i18n="rate">Débit</span>
         <select id="rate">
           <option>1/4</option><option>1/8</option><option>1/8T</option>
           <option selected>1/16</option><option>1/16T</option><option>1/32</option>
         </select>
       </label>
-      <label>Ordre
+      <label><span data-i18n="order">Ordre</span>
         <select id="order">
-          <option value="up">Montant</option>
-          <option value="down">Descendant</option>
-          <option value="updown">Montant-descendant</option>
-          <option value="downup">Descendant-montant</option>
-          <option value="as-played">Ordre de frappe</option>
-          <option value="random">Aléatoire</option>
-          <option value="chord">Accord</option>
+          <option value="up" data-i18n="order_up">Montant</option>
+          <option value="down" data-i18n="order_down">Descendant</option>
+          <option value="updown" data-i18n="order_updown">Montant-descendant</option>
+          <option value="downup" data-i18n="order_downup">Descendant-montant</option>
+          <option value="as-played" data-i18n="order_as_played">Ordre de frappe</option>
+          <option value="random" data-i18n="order_random">Aléatoire</option>
+          <option value="chord" data-i18n="order_chord">Accord</option>
         </select>
       </label>
-      <label>Octaves <input type="number" id="octaves" value="1" min="1" max="4" step="1" style="width:60px"></label>
-      <label>Swing <input type="number" id="swing" value="0" min="0" max="0.6" step="0.05" style="width:70px"></label>
-      <button id="exportMidi">Exporter MIDI</button>
+      <label><span data-i18n="octaves">Octaves</span> <input type="number" id="octaves" value="1" min="1" max="4" step="1" style="width:60px"></label>
+      <label><span data-i18n="swing">Swing</span> <input type="number" id="swing" value="0" min="0" max="0.6" step="0.05" style="width:70px"></label>
+      <button id="exportMidi" data-i18n="export_midi">Exporter MIDI</button>
     </div>
   </section>
 
   <section class="zone">
-    <h2>Pas</h2>
+    <h2 data-i18n="pas">Pas</h2>
     <div class="panel">
       <div class="lanes-wrap">
-        <button type="button" class="scroll-arrow left"  aria-label="Défiler à gauche">‹</button>
+        <button type="button" class="scroll-arrow left"  data-i18n-attr="aria-label:scroll_left">‹</button>
         <div id="steps-grid" class="lanes"></div>
-        <button type="button" class="scroll-arrow right" aria-label="Défiler à droite">›</button>
+        <button type="button" class="scroll-arrow right" data-i18n-attr="aria-label:scroll_right">›</button>
       </div>
-      <div class="hint">
+      <div class="hint" data-i18n="grid_hint">
         Glisser verticalement dans un slider : régler la valeur. Double-clic : remettre à zéro.
         T = tenue, R = note aléatoire dans l'accord, G = glide depuis la note précédente.
       </div>
@@ -244,22 +281,24 @@
   </section>
 
   <section class="zone">
-    <h2>Grille d'accords</h2>
+    <h2 data-i18n="chord_grid">Grille d'accords</h2>
     <div class="panel">
       <div id="chord-list" class="chord-list"></div>
       <div class="row" style="margin-top:10px">
-        <button id="chord-add">+ Ajouter un accord</button>
-        <span class="hint" style="margin:0">En lecture, chaque accord dure une mesure et la grille boucle.</span>
+        <button id="chord-add" data-i18n="add_chord">+ Ajouter un accord</button>
+        <span class="hint" style="margin:0" data-i18n="loop_hint">En lecture, chaque accord dure une mesure et la grille boucle.</span>
       </div>
       <div style="margin-top:12px">
-        <div class="hint" style="margin-bottom:4px">Accord en cours :</div>
+        <div class="hint" style="margin-bottom:4px" data-i18n="current_chord">Accord en cours :</div>
         <div id="chord-notes" class="chord-notes"></div>
       </div>
     </div>
   </section>
 </main>
 
-<script src="engine.js?v=3"></script>
-<script src="app.js?v=3"></script>
+<script src="i18n.js?v=1"></script>
+<script src="i18n-dict.js?v=1"></script>
+<script src="engine.js?v=4"></script>
+<script src="app.js?v=4"></script>
 </body>
 </html>
