@@ -113,15 +113,17 @@
     border-radius: 4px; padding: 4px 0; font-size: 11px; cursor: pointer; text-align: center;
   }
   .head .on.active { background: var(--step-on); color: var(--accent-ink); border-color: transparent; }
-  /* Ligne de mini-toggles R/G/T. */
-  .toggles .cell { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 2px; }
-  .toggles button {
-    padding: 2px 0; font-size: 10px; border-radius: 4px; background: transparent;
-    border: 1px solid var(--line); color: var(--muted); cursor: pointer;
+  /* Lignes de flags (tenue / aléatoire / glide) : une par pas, bouton unique. */
+  .flag-row .cell { display: flex; }
+  .flag-row .flag {
+    width: 100%; padding: 4px 0; font-size: 11px; font-weight: 600;
+    background: var(--step); border: 1px solid var(--line); color: var(--muted);
+    border-radius: 4px; cursor: pointer; text-align: center;
   }
-  .toggles button.active.tie { background: var(--tie); border-color: var(--tie); color: var(--accent-ink); }
-  .toggles button.active.rnd { background: var(--slide); border-color: var(--slide); color: var(--accent-ink); }
-  .toggles button.active.gld { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+  .flag-row .flag.active { color: var(--accent-ink); border-color: transparent; }
+  .flag-row.tie .flag.active { background: var(--tie); }
+  .flag-row.rnd .flag.active { background: var(--slide); }
+  .flag-row.gld .flag.active { background: var(--accent); }
 
   /* Notes de l'accord courant. */
   .chord-notes { display: flex; flex-wrap: wrap; gap: 6px; }
@@ -180,6 +182,16 @@
   .sheet .body { margin: 0; padding: 16px 18px 18px; font-size: 13px; color: var(--text); }
   .sheet .body p { margin: 0 0 10px; }
   .sheet .body p:last-child { margin-bottom: 0; }
+  .flags-help { margin: 8px 0 12px; padding: 0; list-style: none; display: grid; gap: 8px; }
+  .flags-help li { display: grid; grid-template-columns: 26px 1fr; gap: 10px; align-items: baseline; }
+  .flags-help .tag {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 24px; height: 22px; border-radius: 4px; font-size: 11px; font-weight: 700;
+    color: var(--accent-ink);
+  }
+  .flags-help .tag.tie { background: var(--tie); }
+  .flags-help .tag.rnd { background: var(--slide); }
+  .flags-help .tag.gld { background: var(--accent); }
   .sc-credits { margin: 0; padding: 12px 18px 16px; border-top: 1px solid var(--line); font-size: 12px; color: var(--muted); line-height: 1.6; }
   dialog#langSheet { padding: 0; color: var(--text); background: var(--bg); border: 1px solid var(--line); border-radius: 12px; width: min(518px, calc(100vw - 32px)); }
   dialog#langSheet::backdrop { background: rgba(0, 0, 0, .5); }
@@ -329,7 +341,13 @@
     <button class="x" value="close" data-i18n-attr="aria-label:help_close">✕</button>
   </form>
   <div class="body">
-    <p data-i18n="grid_hint">Glisser verticalement dans un slider : régler la valeur. Double-clic : remettre à zéro. T = tenue, R = note aléatoire dans l'accord, G = glide depuis la note précédente.</p>
+    <p data-i18n="grid_hint_short" style="white-space: pre-line">Glisser verticalement dans un slider : régler la valeur.
+Double-clic : remettre à zéro.</p>
+    <ul class="flags-help">
+      <li><span class="tag tie">T</span><span data-i18n="help_tie">Tenue : la note du pas précédent se prolonge sur ce pas, sans nouvelle attaque (comme une liaison en notation musicale).</span></li>
+      <li><span class="tag rnd">R</span><span data-i18n="help_rand">Aléatoire : à chaque passage, tire une note au hasard dans l'accord courant au lieu de suivre l'ordre d'arpège.</span></li>
+      <li><span class="tag gld">G</span><span data-i18n="help_glide">Glide : la hauteur monte ou descend en pente continue depuis la note du pas précédent (portamento / slide).</span></li>
+    </ul>
     <p data-i18n="loop_hint">En lecture, chaque accord dure une mesure et la grille boucle.</p>
   </div>
   <p class="sc-credits">
@@ -342,9 +360,9 @@
 </dialog>
 
 <script src="i18n.js?v=2"></script>
-<script src="i18n-dict.js?v=3"></script>
+<script src="i18n-dict.js?v=4"></script>
 <script src="engine.js?v=4"></script>
-<script src="app.js?v=6"></script>
+<script src="app.js?v=7"></script>
 <script>
   // Fenêtre d'aide, ouverte depuis le bouton « i ». Date : document.lastModified localisée.
   (function () {

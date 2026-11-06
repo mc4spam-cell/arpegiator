@@ -51,6 +51,10 @@
     "lang": "Langue",
     "help_author": "Auteur",
     "help_updated": "Dernière mise à jour",
+    "grid_hint_short": "Glisser verticalement dans un slider : régler la valeur.\nDouble-clic : remettre à zéro.",
+    "help_tie": "Tenue : la note du pas précédent se prolonge sur ce pas, sans nouvelle attaque (comme une liaison en notation musicale).",
+    "help_rand": "Aléatoire : à chaque passage, tire une note au hasard dans l'accord courant au lieu de suivre l'ordre d'arpège.",
+    "help_glide": "Glide : la hauteur monte ou descend en pente continue depuis la note du pas précédent (portamento / slide).",
   });
 
   add('en', {
@@ -101,6 +105,10 @@
     "lang": "Language",
     "help_author": "Author",
     "help_updated": "Last update",
+    "grid_hint_short": "Drag vertically in a slider to set a value.\nDouble-click to reset.",
+    "help_tie": "Tie: the previous step's note is sustained through this step, with no new attack (like a tie in music notation).",
+    "help_rand": "Random: on each pass, pick a random note from the current chord instead of following the arpeggio order.",
+    "help_glide": "Glide: pitch slides continuously up or down from the previous step's note (portamento / slide).",
   });
 
   add('es', {

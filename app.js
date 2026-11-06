@@ -244,18 +244,30 @@
       });
     }
 
-    // Ligne de toggles R/G/T.
-    const tog = document.createElement("div");
-    tog.className = "lane toggles";
-    tog.innerHTML = `<div class="lbl">${T("lane_flags")}</div><div class="cells"></div>`;
-    const togCells = tog.querySelector(".cells");
+    // Trois lignes distinctes pour les flags : tenue, aléatoire, glide.
+    const mkFlagLane = (cls, labelKey) => {
+      const el = document.createElement("div");
+      el.className = `lane flag-row ${cls}`;
+      el.innerHTML = `<div class="lbl">${T(labelKey)}</div><div class="cells"></div>`;
+      return el;
+    };
+    const tieLane = mkFlagLane("tie", "tie_title");
+    const randLane = mkFlagLane("rnd", "rand_title");
+    const glideLane = mkFlagLane("gld", "glide_title");
+    const flagCells = {
+      tie: tieLane.querySelector(".cells"),
+      rand: randLane.querySelector(".cells"),
+      glide: glideLane.querySelector(".cells"),
+    };
 
     // Montage dans l'ordre final.
     grid.appendChild(head);
     grid.appendChild(laneEls.pitch);
     grid.appendChild(laneEls.octave);
     grid.appendChild(laneEls.duration);
-    grid.appendChild(tog);
+    grid.appendChild(tieLane);
+    grid.appendChild(randLane);
+    grid.appendChild(glideLane);
 
     // Remplissage par pas.
     for (let i = 0; i < state.steps; i++) {
@@ -313,20 +325,20 @@
       dCell.appendChild(dur.el); dCell.appendChild(dur.label);
       lanes.duration.appendChild(dCell);
 
-      // Toggles.
-      const tCell = document.createElement("div"); tCell.className = "cell";
-      const mkTog = (cls, key, title) => {
+      // Flags : 1 bouton par pas dans chaque ligne (T, R, G).
+      const mkFlagBtn = (letter, key, title) => {
+        const cell = document.createElement("div"); cell.className = "cell";
         const b = document.createElement("button");
-        b.className = cls + (st[key] ? " active" : "");
-        b.textContent = cls.toUpperCase();
+        b.className = "flag" + (st[key] ? " active" : "");
+        b.textContent = letter;
         b.title = title;
         b.addEventListener("click", () => { st[key] = !st[key]; b.classList.toggle("active", st[key]); });
-        return b;
+        cell.appendChild(b);
+        return cell;
       };
-      tCell.appendChild(mkTog("tie", "tie", T("tie_title")));
-      tCell.appendChild(mkTog("rnd", "rand", T("rand_title")));
-      tCell.appendChild(mkTog("gld", "glide", T("glide_title")));
-      togCells.appendChild(tCell);
+      flagCells.tie.appendChild(mkFlagBtn("T", "tie", T("tie_title")));
+      flagCells.rand.appendChild(mkFlagBtn("R", "rand", T("rand_title")));
+      flagCells.glide.appendChild(mkFlagBtn("G", "glide", T("glide_title")));
 
       // Lien entre ON et apparence grisée des sliders.
       pCell._vs = pit.el; oCell._vs = oct.el; dCell._vs = dur.el;
