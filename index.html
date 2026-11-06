@@ -135,19 +135,22 @@
   .chord-panel { padding: 10px; }
   .chord-list { display: flex; flex-direction: column; gap: 4px; }
   .chord-row {
-    display: grid; grid-template-columns: 22px auto auto auto 1fr 24px; gap: 6px; align-items: center;
+    display: grid; grid-template-columns: 22px auto auto auto 1fr auto auto; gap: 6px; align-items: center;
     background: var(--panel2); border: 1px solid var(--line); border-radius: 6px; padding: 3px 8px;
   }
+  .chord-row .rnd {
+    width: 22px; height: 22px; padding: 0; border-radius: 50%; line-height: 1;
+    font-size: 14px; font-weight: 600; cursor: pointer;
+    background: var(--panel); border: 1px solid var(--line); color: var(--muted);
+    display: inline-flex; align-items: center; justify-content: center;
+  }
+  .chord-row .rnd.add:hover { color: var(--accent); border-color: var(--accent); }
+  .chord-row .rnd.del:hover { color: var(--tie); border-color: var(--tie); }
   .chord-row.current { border-color: var(--accent); }
   .chord-row .idx { color: var(--muted); font-size: 11px; font-variant-numeric: tabular-nums; text-align: center; }
   .chord-row select, .chord-row input { background: var(--panel); color: var(--text);
     border: 1px solid var(--line); border-radius: 4px; padding: 2px 5px; font: inherit; font-size: 12px; }
   .chord-row label.hint { font-size: 11px; }
-  .chord-row .del {
-    background: transparent; border: 1px solid var(--line); border-radius: 4px;
-    color: var(--muted); padding: 2px 6px; cursor: pointer; font-size: 12px; line-height: 1;
-  }
-  .chord-row .del:hover { color: var(--tie); border-color: var(--tie); }
 
   .hint { color: var(--muted); font-size: 12px; margin-top: 6px; }
 
@@ -235,7 +238,7 @@
     .lane.duration .vs { height: 50px; }
 
     /* Accord : on retire l'aperçu de notes pour tenir sur une ligne. */
-    .chord-row { grid-template-columns: 22px auto auto auto 24px; gap: 6px; padding: 5px 8px; }
+    .chord-row { grid-template-columns: 22px auto auto auto auto auto; gap: 6px; padding: 5px 8px; }
     .chord-row > span.hint { display: none; }
     .chord-row select, .chord-row input { padding: 3px 5px; font-size: 12px; }
     .chord-row .oct { width: 42px !important; }
@@ -299,10 +302,6 @@
     <h2 data-i18n="chord_grid">Grille d'accords</h2>
     <div class="panel chord-panel">
       <div id="chord-list" class="chord-list"></div>
-      <div class="row" style="margin-top:8px">
-        <button id="chord-add" data-i18n="add_chord">+ Ajouter un accord</button>
-        <span class="hint" style="margin:0" data-i18n="loop_hint">En lecture, chaque accord dure une mesure et la grille boucle.</span>
-      </div>
       <div id="chord-notes" class="chord-notes" hidden></div>
     </div>
   </section>
@@ -314,10 +313,6 @@
         <button type="button" class="scroll-arrow left"  data-i18n-attr="aria-label:scroll_left">‹</button>
         <div id="steps-grid" class="lanes"></div>
         <button type="button" class="scroll-arrow right" data-i18n-attr="aria-label:scroll_right">›</button>
-      </div>
-      <div class="hint" data-i18n="grid_hint">
-        Glisser verticalement dans un slider : régler la valeur. Double-clic : remettre à zéro.
-        T = tenue, R = note aléatoire dans l'accord, G = glide depuis la note précédente.
       </div>
     </div>
   </section>
@@ -349,7 +344,7 @@
 <script src="i18n.js?v=2"></script>
 <script src="i18n-dict.js?v=3"></script>
 <script src="engine.js?v=4"></script>
-<script src="app.js?v=5"></script>
+<script src="app.js?v=6"></script>
 <script>
   // Fenêtre d'aide, ouverte depuis le bouton « i ». Date : document.lastModified localisée.
   (function () {

@@ -415,7 +415,8 @@
           <input type="number" class="oct" min="1" max="6" step="1" value="${c.octave}" style="width:50px">
         </label>
         <span class="hint" style="margin:0; font-variant-numeric: tabular-nums">${buildChord(c.root, c.quality, c.octave).map(m => NOTE_NAMES[m % 12]).join(" ")}</span>
-        <button class="del" title="${T("delete_title")}">✕</button>
+        <button class="rnd add" title="${T("add_chord")}" aria-label="${T("add_chord")}">+</button>
+        ${i === 0 ? "" : `<button class="rnd del" title="${T("delete_title")}" aria-label="${T("delete_title")}">−</button>`}
       `;
       row.querySelector(".root").addEventListener("change", (e) => {
         c.root = +e.target.value; renderChordList(); renderChordNotes();
@@ -426,7 +427,11 @@
       row.querySelector(".oct").addEventListener("change", (e) => {
         c.octave = Math.max(1, Math.min(6, +e.target.value || 4)); renderChordList(); renderChordNotes();
       });
-      row.querySelector(".del").addEventListener("click", () => {
+      row.querySelector(".add").addEventListener("click", () => {
+        state.chords.splice(i + 1, 0, { root: 0, quality: "maj", octave: 4 });
+        renderChordList(); renderChordNotes();
+      });
+      row.querySelector(".del")?.addEventListener("click", () => {
         if (state.chords.length <= 1) return;
         state.chords.splice(i, 1);
         if (state.chordIdx >= state.chords.length) state.chordIdx = 0;
@@ -473,10 +478,6 @@
     });
     document.getElementById("exportMidi").addEventListener("click", exportMidi);
     document.getElementById("meter").addEventListener("change", applyMeter);
-    document.getElementById("chord-add").addEventListener("click", () => {
-      state.chords.push({ root: 0, quality: "maj", octave: 4 });
-      renderChordList(); renderChordNotes();
-    });
   }
 
   // Flèches ‹/› sur la grille quand elle dépasse horizontalement.
