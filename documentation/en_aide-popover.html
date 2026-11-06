@@ -35,14 +35,17 @@
 <main>
   <header><a class="back" href="en_index.html">← Back to Documentation Index</a></header>
   <h1>Help dialog</h1>
-  <p class="lead">Modal dialog opened from the header's « i » button. It briefly recaps how to manipulate the step grid, then shows the author and the last publication date.</p>
-  <img class="shot" src="screenshots/aide-popover.jpg" alt="Help dialog">
+  <p class="lead">Modal dialog opened from the header's « i » button. It recaps how to operate the sliders, details the role of the three T / R / G flags, and shows the author and the last publication date.</p>
+  <img class="shot" src="screenshots/en_aide-popover.jpg" alt="Help dialog">
   <h2>Contents</h2>
   <table class="ui">
     <tbody>
-      <tr><th>« Aide » title + ✕ button</th><td>Modal header bar; ✕ closes the dialog (Escape or backdrop click also work).</td></tr>
-      <tr><th>Step grid usage</th><td>Drag vertically on a slider to set a value. Double-click to reset. T = tie, R = random note from the chord, G = glide from the previous note.</td></tr>
-      <tr><th>Playback usage</th><td>During playback, each chord lasts one bar, and the grid loops.</td></tr>
+      <tr><th>« Help » title + ✕ button</th><td>Modal header bar; ✕ closes the dialog (Escape or backdrop click also work).</td></tr>
+      <tr><th>Slider usage</th><td>Drag vertically in a slider to set a value. Double-click to reset.</td></tr>
+      <tr><th>T flag — Tie</th><td>The previous step's note is sustained through this step, with no new attack (like a tie in music notation).</td></tr>
+      <tr><th>R flag — Random</th><td>On each pass, the engine picks a random note from the current chord instead of following the arpeggio order.</td></tr>
+      <tr><th>G flag — Glide</th><td>Pitch slides continuously up or down from the previous step's note (portamento / slide).</td></tr>
+      <tr><th>Playback reminder</th><td>During playback, each chord lasts one bar, and the grid loops.</td></tr>
       <tr><th>Footer</th><td>Author: MC4Spam. Last update: the last publication date, localized to the current language.</td></tr>
     </tbody>
   </table>

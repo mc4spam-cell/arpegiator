@@ -35,16 +35,16 @@
 <main>
   <header><a class="back" href="fr_index.html">← Retour à l'index</a></header>
   <h1>Écran principal</h1>
-  <p class="lead">Arpegiator est un arpégiateur à pas qui tient dans une page unique : vous définissez une grille d'accords, vous paramétrez les pas (hauteur, octave, durée, drapeaux T/R/G), et vous lancez la lecture. L'accord courant est arpégé selon l'ordre choisi (montant, descendant, aléatoire, etc.) ; la grille boucle sur un cycle de mesures, un accord par mesure.</p>
-  <img class="shot" src="screenshots/arpegiator.jpg" alt="Écran principal">
+  <p class="lead">Arpegiator est un arpégiateur à pas tenant dans une page unique : on définit une grille d'accords, on paramètre chaque pas (hauteur, octave, durée, et trois flags T/R/G), puis on lance la lecture. L'accord en cours est arpégé selon l'ordre choisi (montant, descendant, aléatoire, etc.) ; la grille boucle sur un cycle de mesures, un accord par mesure. Sélecteur de langue (6 langues : FR / EN / ES / DE / ZH / RU) et aide intégrée dans l'en-tête.</p>
+  <img class="shot" src="screenshots/fr_arpegiator.jpg" alt="Écran principal">
   <h2>Éléments de l'interface</h2>
   <table class="ui">
     <tbody>
-      <tr><th>En-tête</th><td>Titre, sous-titre, bouton Aide (i) et sélecteur de langue (drapeau).</td></tr>
-      <tr><th>Section Transport</th><td>Panneau rassemblant tous les paramètres de lecture : BPM, Mesure (3/4, 4/4, 5/8, 7/8), Pas par mesure (1 à 48), Débit (1/4 à 1/32, dont triolets), Ordre d'arpège, nombre d'octaves, et Swing.</td></tr>
-      <tr><th>Grille d'accords</th><td>Chaque ligne décrit un accord par sa fondamentale, sa qualité (maj, min, maj7, …) et son octave. Boutons ✕ pour supprimer, « + Ajouter un accord » pour étendre la grille. L'accord en cours de lecture est encadré en couleur d'accent.</td></tr>
-      <tr><th>Grille des pas</th><td>Un bloc par paramètre : barre on/off, pitch, octave, durée, drapeaux T (tenue), R (aléatoire dans l'accord), G (glide). Chaque colonne est un pas. Glisser verticalement sur un slider ajuste la valeur ; double-clic remet à zéro. Le dé « aléatoire » remplit toute la ligne. Les flèches ‹ › apparaissent si la grille déborde.</td></tr>
-      <tr><th>Barre d'actions fixe en bas</th><td>Bouton Lecture / Stop (texte qui suit l'état) et bouton Exporter MIDI. Toujours visibles, sur tous les écrans.</td></tr>
+      <tr><th>En-tête</th><td>Titre « Arpegiator », sous-titre d'accroche, bouton Aide rond (i) et sélecteur de langue rond (drapeau).</td></tr>
+      <tr><th>Section Transport</th><td>Panneau de tous les paramètres de lecture : BPM, Mesure (3/4, 4/4, 5/8, 7/8), Pas par mesure (1 à 48), Débit (1/4 à 1/32 y compris triolets), Ordre de l'arpège, nombre d'Octaves et Swing.</td></tr>
+      <tr><th>Grille d'accords</th><td>Une ligne compacte par accord : fondamentale, qualité (maj, min, maj7, …), octave, aperçu des notes. Un bouton rond + à droite insère un nouvel accord après la ligne. À partir de la 2ᵉ ligne, un bouton rond − supprime la ligne. L'accord en cours de lecture est encadré en couleur d'accent.</td></tr>
+      <tr><th>Grille des pas</th><td>Sept lignes empilées, une par paramètre : PAS (bouton on/off par pas), PITCH, OCTAVE, DURÉE (sliders verticaux avec bouton dé « aléatoire » pour tirer toute la ligne au hasard), puis TENUE, NOTE ALÉATOIRE et GLIDE (une ligne par flag, un bouton coloré par pas). Glisser verticalement dans un slider ajuste la valeur ; double-clic remet à zéro. Les flèches ‹ › apparaissent quand la grille déborde horizontalement.</td></tr>
+      <tr><th>Barre d'actions fixe en bas</th><td>Toujours visible, sur tous les écrans : bouton Lecture / Stop (le texte suit l'état) et bouton Exporter MIDI.</td></tr>
     </tbody>
   </table>
   <footer>Généré le 2026-11-06 — MC4Spam</footer>

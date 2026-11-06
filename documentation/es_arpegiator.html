@@ -35,16 +35,16 @@
 <main>
   <header><a class="back" href="es_index.html">← Volver al índice</a></header>
   <h1>Pantalla principal</h1>
-  <p class="lead">Arpegiator es un arpegiador por pasos en una sola página: defines un grid de acordes, configuras los pasos (tono, octava, duración, flags T/R/G) y pulsas reproducir. El acorde actual se arpegia según el orden elegido (ascendente, descendente, aleatorio, …); el grid se repite por ciclo de compases, un acorde por compás.</p>
-  <img class="shot" src="screenshots/arpegiator.jpg" alt="Pantalla principal">
+  <p class="lead">Arpegiator es un arpegiador por pasos en una sola página: defines un grid de acordes, configuras cada paso (tono, octava, duración y tres flags T/R/G) y pulsas reproducir. El acorde actual se arpegia según el orden elegido (ascendente, descendente, aleatorio, …); el grid se repite por ciclo de compases, un acorde por compás. Selector de idioma (6 idiomas: FR / EN / ES / DE / ZH / RU) y ayuda integrada en la cabecera.</p>
+  <img class="shot" src="screenshots/es_arpegiator.jpg" alt="Pantalla principal">
   <h2>Vista general de la interfaz</h2>
   <table class="ui">
     <tbody>
-      <tr><th>Cabecera</th><td>Título, subtítulo, botón de Ayuda (i) y selector de idioma (bandera).</td></tr>
+      <tr><th>Cabecera</th><td>Título « Arpegiator », subtítulo, botón de Ayuda redondo (i) y selector de idioma redondo (bandera).</td></tr>
       <tr><th>Sección Transporte</th><td>Panel con todos los ajustes de reproducción: BPM, Compás (3/4, 4/4, 5/8, 7/8), Pasos por compás (1 a 48), Subdivisión (1/4 a 1/32, incluidos tresillos), Orden del arpegio, Octavas y Swing.</td></tr>
-      <tr><th>Grid de acordes</th><td>Cada fila define un acorde por su fundamental, calidad (maj, min, maj7, …) y octava. Botón ✕ para eliminar, « + Añadir acorde » para extender el grid. El acorde en curso está resaltado.</td></tr>
-      <tr><th>Grid de pasos</th><td>Un carril por parámetro: barra on/off, tono, octava, duración, flags T (ligadura), R (aleatorio del acorde), G (glisando). Cada columna es un paso. Arrastra verticalmente un deslizador para ajustar el valor; doble clic para reiniciar. El dado « aleatorio » rellena toda la fila. Las flechas ‹ › aparecen si el grid se desborda.</td></tr>
-      <tr><th>Barra de acciones fija abajo</th><td>Botón Reproducir/Parar (el texto sigue el estado) y botón Exportar MIDI. Siempre visibles, en cualquier tamaño de pantalla.</td></tr>
+      <tr><th>Grid de acordes</th><td>Una fila compacta por acorde: fundamental, calidad (maj, min, maj7, …), octava, previsualización de las notas. Un botón redondo + a la derecha añade un nuevo acorde tras la fila. A partir de la 2ª fila, un botón redondo − elimina la fila. El acorde en curso está resaltado en el color de acento.</td></tr>
+      <tr><th>Grid de pasos</th><td>Siete carriles apilados, uno por parámetro: PASO (botón on/off por paso), TONO, OCTAVA, DURACIÓN (deslizadores verticales con dado « aleatorio » para barajar toda la fila), luego LIGADURA, NOTA ALEATORIA y PORTAMENTO (un carril por flag, un botón de color por paso). Arrastra verticalmente en un deslizador para ajustar; doble clic para reiniciar. Las flechas ‹ › aparecen cuando el grid se desborda horizontalmente.</td></tr>
+      <tr><th>Barra de acciones fija abajo</th><td>Siempre visible en cualquier tamaño de pantalla: botón Reproducir/Parar (el texto sigue el estado) y botón Exportar MIDI.</td></tr>
     </tbody>
   </table>
   <footer>Generado el 2026-11-06 — MC4Spam</footer>

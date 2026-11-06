@@ -35,16 +35,16 @@
 <main>
   <header><a class="back" href="en_index.html">← Back to Documentation Index</a></header>
   <h1>Main screen</h1>
-  <p class="lead">Arpegiator is a single-page step arpeggiator: you define a chord grid, configure the step lanes (pitch, octave, duration, T/R/G flags), and press play. The current chord is arpeggiated using the chosen order (up, down, random, …); the grid loops over a cycle of bars, one chord per bar.</p>
-  <img class="shot" src="screenshots/arpegiator.jpg" alt="Main screen">
+  <p class="lead">Arpegiator is a single-page step arpeggiator: you define a chord grid, configure each step (pitch, octave, length, and three T/R/G flags), and press play. The current chord is arpeggiated using the chosen order (up, down, random, …); the grid loops over a cycle of bars, one chord per bar. Language selector (6 languages: FR / EN / ES / DE / ZH / RU) and built-in help in the header.</p>
+  <img class="shot" src="screenshots/en_arpegiator.jpg" alt="Main screen">
   <h2>Interface overview</h2>
   <table class="ui">
     <tbody>
-      <tr><th>Header</th><td>Title, subtitle, Help button (i), and language selector (flag).</td></tr>
-      <tr><th>Transport section</th><td>Panel grouping all playback settings: BPM, Meter (3/4, 4/4, 5/8, 7/8), Steps per bar (1 to 48), Rate (1/4 to 1/32, including triplets), arpeggio Order, Octaves, and Swing.</td></tr>
-      <tr><th>Chord grid</th><td>Each row defines a chord by its root, quality (maj, min, maj7, …) and octave. ✕ button removes the chord; « + Add chord » extends the grid. The chord currently playing is outlined with the accent color.</td></tr>
-      <tr><th>Step grid</th><td>One lane per parameter: on/off bar, pitch, octave, length, flags T (tie), R (random from chord), G (glide). Each column is one step. Drag vertically on a slider to set a value; double-click resets to zero. The « random » die randomizes the whole row. ‹ › arrows appear when the grid overflows horizontally.</td></tr>
-      <tr><th>Fixed bottom action bar</th><td>Play/Stop button (label follows state) and Export MIDI button. Always visible, on all screen sizes.</td></tr>
+      <tr><th>Header</th><td>« Arpegiator » title, tagline subtitle, round Help button (i), and round language selector (flag).</td></tr>
+      <tr><th>Transport section</th><td>Panel grouping every playback setting: BPM, Meter (3/4, 4/4, 5/8, 7/8), Steps per bar (1 to 48), Rate (1/4 to 1/32 including triplets), arpeggio Order, Octaves, and Swing.</td></tr>
+      <tr><th>Chord grid</th><td>One compact row per chord: root, quality (maj, min, maj7, …), octave, note preview. A round + button at the right inserts a new chord after the row. From the 2nd row on, a round − button removes the row. The chord currently playing is outlined with the accent color.</td></tr>
+      <tr><th>Step grid</th><td>Seven stacked lanes, one per parameter: STEP (on/off button per step), PITCH, OCTAVE, LENGTH (vertical sliders with a « random » die to shuffle the whole row), then TIE, RANDOM NOTE, and GLIDE (one lane per flag, one colored button per step). Drag vertically in a slider to set a value; double-click resets to zero. ‹ › arrows appear when the grid overflows horizontally.</td></tr>
+      <tr><th>Fixed bottom action bar</th><td>Always visible on every screen size: Play/Stop button (label follows state) and Export MIDI button.</td></tr>
     </tbody>
   </table>
   <footer>Generated on 2026-11-06 — MC4Spam</footer>
