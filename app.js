@@ -244,16 +244,23 @@
       });
     }
 
-    // Trois lignes distinctes pour les flags : tenue, aléatoire, glide.
-    const mkFlagLane = (cls, labelKey) => {
+    // Trois lignes distinctes pour les flags. Cliquer le titre bascule
+    // toute la ligne : si au moins un pas est actif, tout remettre à 0 ;
+    // sinon, tout passer à 1.
+    const mkFlagLane = (cls, labelKey, key) => {
       const el = document.createElement("div");
       el.className = `lane flag-row ${cls}`;
-      el.innerHTML = `<div class="lbl">${T(labelKey)}</div><div class="cells"></div>`;
+      el.innerHTML = `<div class="lbl toggle-all" title="${T("toggle_all_title")}">${T(labelKey)}</div><div class="cells"></div>`;
+      el.querySelector(".lbl").addEventListener("click", () => {
+        const target = !state.pattern.some(st => st[key]);
+        state.pattern.forEach(st => { st[key] = target; });
+        el.querySelectorAll(".flag").forEach(b => b.classList.toggle("active", target));
+      });
       return el;
     };
-    const tieLane = mkFlagLane("tie", "tie_title");
-    const randLane = mkFlagLane("rnd", "rand_title");
-    const glideLane = mkFlagLane("gld", "glide_title");
+    const tieLane = mkFlagLane("tie", "tie_title", "tie");
+    const randLane = mkFlagLane("rnd", "rand_title", "rand");
+    const glideLane = mkFlagLane("gld", "glide_title", "glide");
     const flagCells = {
       tie: tieLane.querySelector(".cells"),
       rand: randLane.querySelector(".cells"),

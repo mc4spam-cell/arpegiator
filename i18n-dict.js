@@ -55,6 +55,7 @@
     "help_tie": "Tenue : la note du pas précédent se prolonge sur ce pas, sans nouvelle attaque (comme une liaison en notation musicale).",
     "help_rand": "Aléatoire : à chaque passage, tire une note au hasard dans l'accord courant au lieu de suivre l'ordre d'arpège.",
     "help_glide": "Glide : la hauteur monte ou descend en pente continue depuis la note du pas précédent (portamento / slide).",
+    "toggle_all_title": "Cliquer pour tout activer / tout désactiver",
   });
 
   add('en', {
@@ -109,6 +110,7 @@
     "help_tie": "Tie: the previous step's note is sustained through this step, with no new attack (like a tie in music notation).",
     "help_rand": "Random: on each pass, pick a random note from the current chord instead of following the arpeggio order.",
     "help_glide": "Glide: pitch slides continuously up or down from the previous step's note (portamento / slide).",
+    "toggle_all_title": "Click to toggle the whole row on / off",
   });
 
   add('es', {

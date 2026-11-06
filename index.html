@@ -60,14 +60,17 @@
     position: sticky; left: 0; z-index: 1; background: var(--panel2);
   }
   .scroll-arrow {
-    position: absolute; top: 0; bottom: 0; width: 32px;
+    position: absolute; top: 0; bottom: 0; width: 24px;
     display: none; align-items: center; justify-content: center;
     border: 0; padding: 0; cursor: pointer; color: var(--text);
     font-size: 22px; line-height: 1; font-weight: 700;
     z-index: 3; pointer-events: auto;
   }
-  .scroll-arrow.left  { left: 0;  background: linear-gradient(to right, var(--panel) 40%, transparent); }
-  .scroll-arrow.right { right: 0; background: linear-gradient(to left,  var(--panel) 40%, transparent); }
+  /* Marge interne à droite/gauche pour que la dernière cellule ne se retrouve
+     pas cachée sous l'overlay quand on n'est pas encore au bout. */
+  .lane > .cells { padding-right: 28px; padding-left: 4px; }
+  .scroll-arrow.left  { left: 0;  background: linear-gradient(to right, var(--panel) 50%, transparent); }
+  .scroll-arrow.right { right: 0; background: linear-gradient(to left,  var(--panel) 50%, transparent); }
   .lanes-wrap.has-left  .scroll-arrow.left  { display: flex; }
   .lanes-wrap.has-right .scroll-arrow.right { display: flex; }
   .lane > .lbl {
@@ -124,6 +127,8 @@
   .flag-row.tie .flag.active { background: var(--tie); }
   .flag-row.rnd .flag.active { background: var(--slide); }
   .flag-row.gld .flag.active { background: var(--accent); }
+  .flag-row .lbl.toggle-all { cursor: pointer; user-select: none; }
+  .flag-row .lbl.toggle-all:hover { color: var(--text); }
 
   /* Notes de l'accord courant. */
   .chord-notes { display: flex; flex-wrap: wrap; gap: 6px; }
@@ -268,7 +273,6 @@
 <main>
   <header>
     <h1 data-i18n="app.title">Arpegiator</h1>
-    <p data-i18n="app.subtitle">Arpégiateur à pas — tenez des notes au clavier, lancez.</p>
     <button id="help" data-i18n-attr="aria-label:help,title:help" aria-haspopup="dialog" aria-expanded="false">i</button>
     <button id="lang" data-i18n-attr="aria-label:lang,title:lang" aria-haspopup="dialog" aria-expanded="false">🇫🇷</button>
   </header>
@@ -360,9 +364,9 @@ Double-clic : remettre à zéro.</p>
 </dialog>
 
 <script src="i18n.js?v=2"></script>
-<script src="i18n-dict.js?v=4"></script>
+<script src="i18n-dict.js?v=5"></script>
 <script src="engine.js?v=4"></script>
-<script src="app.js?v=7"></script>
+<script src="app.js?v=8"></script>
 <script>
   // Fenêtre d'aide, ouverte depuis le bouton « i ». Date : document.lastModified localisée.
   (function () {
