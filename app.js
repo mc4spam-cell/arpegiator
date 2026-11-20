@@ -21,13 +21,19 @@
     chordIdx: 0,        // accord en cours de lecture.
     meter: "4/4",
     lastFreq: null,     // dernière fréquence jouée, pour le glide.
+    volume: 0.8,        // volume global (0..1), appliqué par un GainNode maître.
   };
 
   // --- Audio ------------------------------------------------------------------
 
-  let ac = null;
+  let ac = null, master = null;
   function audio() {
-    if (!ac) ac = new (window.AudioContext || window.webkitAudioContext)();
+    if (!ac) {
+      ac = new (window.AudioContext || window.webkitAudioContext)();
+      master = ac.createGain();
+      master.gain.value = state.volume;
+      master.connect(ac.destination);
+    }
     if (ac.state === "suspended") ac.resume();
     return ac;
   }
@@ -54,7 +60,7 @@
     g.gain.exponentialRampToValueAtTime(amp, when + 0.005);
     g.gain.exponentialRampToValueAtTime(amp * 0.4, when + Math.max(0.05, dur * 0.6));
     g.gain.exponentialRampToValueAtTime(0.0001, when + dur + 0.02);
-    osc1.connect(g); osc2.connect(g); g.connect(ctx.destination);
+    osc1.connect(g); osc2.connect(g); g.connect(master);
     osc1.start(when); osc2.start(when);
     osc1.stop(when + dur + 0.05); osc2.stop(when + dur + 0.05);
     state.lastFreq = f;
@@ -488,6 +494,12 @@
     document.getElementById("order").addEventListener("change", (e) => { state.order = e.target.value; });
     document.getElementById("octaves").addEventListener("input", (e) => { state.octaves = +e.target.value || 1; });
     document.getElementById("swing").addEventListener("input", (e) => { state.swing = +e.target.value || 0; });
+    const volEl = document.getElementById("volume");
+    volEl.value = Math.round(state.volume * 100);
+    volEl.addEventListener("input", (e) => {
+      state.volume = Math.max(0, Math.min(1, +e.target.value / 100));
+      if (master) master.gain.value = state.volume;
+    });
     document.getElementById("steps").addEventListener("change", (e) => {
       const n = Math.max(1, Math.min(48, +e.target.value || 16));
       state.steps = n;
